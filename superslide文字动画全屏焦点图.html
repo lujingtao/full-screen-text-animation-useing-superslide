@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="zh-CN">
+<meta name="Keywords" content="SuperSlide,jQuery焦点图/幻灯片">
+<meta name="Description" content="SuperSlide 致力于解决网站大部分特效展示问题，使网站代码规范整洁，方便维护更新。网站上常用的“焦点图/幻灯片”、“Tab标签切换”、“图片滚动”、“无缝滚动”等等只需要一个SuperSlide即可解决！还可以多个SuperSlide组合创造更多效果">
+<title>superslide文字动画全屏焦点图</title>
+
+<script src="jquery1.42.min.js"></script>
+<script src="jquery.SuperSlide.2.1.1.js"></script>
+
+</head>
+
+<body>
+
+
+		<style type="text/css">
+		/* css 重置 */
+		*{margin:0; padding:0; list-style:none; }
+		body{ background:#fff; font:normal 12px/22px 宋体; height:1000px;   }
+		img{ border:0;  }
+		a{ text-decoration:none; color:#333;  }
+
+		h1{ padding:20px; text-align:center; font:normal 30px/200% "Microsoft YaHei"; }
+		.copyRight{ padding:20px 0; text-align:center; font-size:14px; font-family:Arial }
+
+
+		/* 本例子css */
+		.slideBox{ width:100%; overflow:hidden; position:relative; }
+		.slideBox .hd{ width:100% !important;  position:absolute; bottom:15px; z-index:1; height:15px; overflow:hidden  }
+		.slideBox .hd ul{ overflow:hidden; zoom:1; text-align:center; }
+		.slideBox .hd ul li{ cursor:pointer; display:inline-block; *display:inline; zoom:1; margin:0 5px; width:15px; height:15px; background:#000; filter:alpha(opacity=40);opacity:0.4;
+			-webkit-border-radius:100%; -moz-border-radius:100%; border-radius:100%; 
+		}
+		.slideBox .hd ul li.on{ background:#f00; }
+		.slideBox .bd{ position:relative; z-index:0;   }
+		.slideBox .bd ul{ width:100% !important  }
+		.slideBox .bd li{ width:100% !important; height:320px;   position:relative; zoom:1; vertical-align:middle; color:#fff; 
+			font:normal 22px/200% "Microsoft YaHei"; 
+		}
+		.slideBox .bd dd{ position:absolute; display:none }
+
+		/* 下面是前/后按钮代码，如果不需要删除即可 */
+		.slideBox .prev,
+		.slideBox .next{ position:absolute; left:3%; top:50%; margin-top:-35px; display:block; width:32px; height:70px; line-height:70px; background:#000; filter:alpha(opacity=40);opacity:0.4; color:#fff; font-size:18px; text-align:center; -webkit-border-radius:3px; -moz-border-radius:3px; border-radius:3px;  }
+		.slideBox .next{ left:auto; right:3%; background-position:8px 5px; }
+		.slideBox .prev:hover,
+		.slideBox .next:hover{ filter:alpha(opacity=60);opacity:0.6;  }
+		.slideBox .prevStop{ display:none;  }
+		.slideBox .nextStop{ display:none;  }
+
+
+		/* 这里的定位需与dd的playOut属性一致 */
+		.slideBox .bd .item1 .dd1{ top:50px; right:340px; font-size:50px; line-height:150%;   }
+		.slideBox .bd .item1 .dd2{ top:140px; right:340px; }
+		.slideBox .bd .item1 .dd3{ top:190px; right:340px; }
+
+		.slideBox .bd .item2 .dd1{ top:50px; left:340px; font-size:50px; line-height:150%;  }
+		.slideBox .bd .item2 .dd2{ top:140px; left:340px; }
+		.slideBox .bd .item2 .dd3{ top:190px; left:340px; }
+
+		.slideBox .bd .item3 .dd1{ top:0; left:25%; font-size:50px; line-height:150%;  }
+		.slideBox .bd .item3 .dd2{ top:0; left:25%; }
+		.slideBox .bd .item3 .dd3{ top:0; left:25%; }
+
+		.slideBox .bd .item4 .dd1{ bottom:0; right:25%; font-size:50px; line-height:150%;  }
+		.slideBox .bd .item4 .dd2{ bottom:0; right:25%; }
+		.slideBox .bd .item4 .dd3{ bottom:0; right:25%; }
+	
+		.slideBox .bd .item5 .dd1{ top:0; left:25%; font-size:50px; line-height:150%;  }
+		.slideBox .bd .item5 .dd2{ bottom:0; left:25%; }
+
+		</style>
+
+		<h1>superslide文字动画全屏焦点图 -- 大话主席</h1>
+
+
+		<!-- 示例 html 开始 ---------------------------------- -->
+		<div id="slideBox" class="slideBox">
+			<div class="hd">
+				<ul></ul>
+			</div>
+			<div class="bd">
+				<ul>
+					<li class="item1" style="background:#1E90FF">
+						<dl>
+							<!-- palyIn属性为文字出现效果，写入jquery的animate函数，可按需修改。 palyOut属性要与css定义一致，用于返回到默认状态 -->
+							<dd class="dd1" palyIn="{opacity: 'show',right:'140px'}" palyOut="{opacity: 'hide',right:'340px'}">《变4》全球3亿夺冠</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',right:'140px'}" palyOut="{opacity: 'hide',right:'340px'}">中国内地票房持平北美</dd>
+							<dd class="dd3" palyIn="{opacity: 'show',right:'140px'}" palyOut="{opacity: 'hide',right:'340px'}">《变形金刚4》上周五中美同步上映</dd>
+						</dl>
+					</li>
+					<li class="item2" style="background:#20B1AA">
+						<dl>
+							<dd class="dd1" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">《超能陆战队》曝角色海报</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">白胖子变身钢铁侠 宅男小怪兽会喷火</dd>
+							<dd class="dd3" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">BBC也曝光了首张定妆照，以及首支预告片</dd>
+						</dl>
+					</li>
+					<li class="item3" style="background:#D3691F">
+						<dl>
+							<dd class="dd1" palyIn="{opacity: 'show',top:'50px'}" palyOut="{opacity: 'hide',top:'0'}">《蝙蝠侠大战超人》曝新图</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',top:'140px'}" palyOut="{opacity: 'hide',top:'0'}">影片角色图首度曝光</dd>
+							<dd class="dd3" palyIn="{opacity: 'show',top:'190px'}" palyOut="{opacity: 'hide',top:'0'}">首度曝光亨利·卡维尔片场照，他饰演的克拉克·肯特帅气逼人</dd>
+						</dl>
+					</li>
+					<li class="item4" style="background:#9400D4">
+						<dl>
+							<dd class="dd1" palyIn="{opacity: 'show',bottom:'190px'}" palyOut="{opacity: 'hide',bottom:'0'}">土星奖获奖结果揭晓</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',bottom:'120px'}" palyOut="{opacity: 'hide',bottom:'0'}">"地心引力"5大奖项领跑</dd>
+							<dd class="dd3" palyIn="{opacity: 'show',bottom:'70px'}" palyOut="{opacity: 'hide',bottom:'0'}">唐尼凭"钢3"获最佳男演员</dd>
+						</dl>
+					</li>
+					<li class="item5" style="background:#78975E">
+						<dl>
+							<dd class="dd1" palyIn="{opacity: 'show',top:'50px'}" palyOut="{opacity: 'hide',top:'0'}">汤姆·哈迪出演《还魂者》</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',bottom:'120px'}" palyOut="{opacity: 'hide',bottom:'0'}">联手《通天塔》导演助力小李冲奥</dd>
+						</dl>
+					</li>
+					<li class="item2" style="background:#9D0A3A">
+						<dl>
+							<dd class="dd1" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">前五月劲收100亿</dd>
+							<dd class="dd2" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">5月份全国放映场次超过300万场</dd>
+							<dd class="dd3" palyIn="{opacity: 'show',left:'140px'}" palyOut="{opacity: 'hide',left:'340px'}">五月全国发行了中外新片28部，国产片数量占82</dd>
+						</dl>
+					</li>
+
+				</ul>
+			</div>
+
+			<!-- 下面是前/后按钮代码，如果不需要删除即可 -->
+			<a class="prev" href="javascript:void(0)">&lt;</a>
+			<a class="next" href="javascript:void(0)">&gt;</a>
+
+		</div>
+
+		<script type="text/javascript">
+		jQuery(".slideBox").slide({mainCell:".bd ul",titCell:".hd ul",effect:"fold", autoPage:"<li></li>",autoPlay:true,interTime:5000,
+			endFun:function(i,c,s){
+				var curItem = $(".bd li",s).eq(i);
+				curItem.find("dd").each(function(j){
+					// j*250，每行文字延迟执行时间，按需修改；同时这里会把playIn的值写入animate动画函数
+					$(this).stop(1,1).delay( j*250).animate( eval( '(' +$(this).attr("palyIn") +')' )); 
+				});
+				$(".bd li",s).not(curItem).find("dd").each(function(j){
+					$(this).stop(1,1).animate( eval( '(' + $(this).attr("palyOut")  +')' ) )
+				});
+			}
+		});
+		</script>
+		<!-- 示例 html 结束 ---------------------------------- -->
+
+		<div class="copyRight">
+			Copyright © <a href="http://www.superslide2.com/">www.superslide2.com</a>
+		</div>
+
+
+		
+
+</body>
+</html>
+
+
